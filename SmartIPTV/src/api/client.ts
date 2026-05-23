@@ -4,8 +4,9 @@ import Constants from 'expo-constants';
 
 const API_BASE =
   (Constants.expoConfig?.extra as Record<string, unknown>)?.apiBaseUrl ??
-  'http://localhost:5001/api';
-
+  "https://iptv-server-9zli.onrender.com/api" 
+  
+// "http://localhost:5001/api";
 export const apiClient = axios.create({
   baseURL: API_BASE as string,
   timeout: 15000,

@@ -38,7 +38,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "apiBaseUrl": "http://localhost:5001/api",
+      "apiBaseUrl": "https://iptv-server-9zli.onrender.com/api",
       "router": {},
       "eas": {
         "projectId": "c24ce230-d0b5-4c9b-82be-47a1c4acae46"

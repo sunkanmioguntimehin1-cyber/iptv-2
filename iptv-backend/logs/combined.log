@@ -308,3 +308,7 @@
 2026-05-13 20:30:30 [INFO]: ::1 - - [14/May/2026:03:30:30 +0000] "POST /api/auth/login HTTP/1.1" 200 648 "-" "SmartIPTV/1 CFNetwork/3860.500.112 Darwin/25.4.0"
 2026-05-22 23:16:00 [INFO]: Server running on port 5001 in development mode
 2026-05-22 23:16:01 [INFO]: MongoDB connected: ac-mjzmr8r-shard-00-00.fkn2a79.mongodb.net
+2026-05-23 07:42:59 [INFO]: Server running on port 5001 in development mode
+2026-05-23 07:43:00 [INFO]: MongoDB connected: ac-mjzmr8r-shard-00-02.fkn2a79.mongodb.net
+2026-05-23 07:59:13 [INFO]: Server running on port 5001 in development mode
+2026-05-23 07:59:15 [INFO]: MongoDB connected: ac-mjzmr8r-shard-00-02.fkn2a79.mongodb.net
