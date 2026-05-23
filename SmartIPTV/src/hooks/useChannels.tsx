@@ -30,7 +30,7 @@ export function useStreamUrl(channel: any) {
         iptvPassword,
         cmd: channel.cmd,
       }),
-    enabled: !!channel?.cmd && !!portalUrl,
+    enabled: !!channel?.cmd && !!portalUrl && !!iptvUsername && !!iptvPassword,
     staleTime: 1000 * 60 * 2,
     retry: 1,
   });
