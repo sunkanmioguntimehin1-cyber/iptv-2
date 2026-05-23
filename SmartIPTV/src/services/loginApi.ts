@@ -28,6 +28,26 @@ export interface LoginResponse {
 }
 
 export async function loginUser(payload: LoginPayload): Promise<LoginResponse> {
+  const USE_MOCK = true;
+
+  if (USE_MOCK) {
+    return {
+      user: {
+        id: 'dev-001',
+        name: 'Dev User',
+        email: payload.email,
+        role: 'subscriber',
+      },
+      accessToken: 'mock-token-' + Date.now(),
+      refreshToken: 'mock-refresh-' + Date.now(),
+      iptvCredentials: {
+        portalUrl: 'http://opplex.rw:8080',
+        iptvUsername: 'kings117987',
+        iptvPassword: '505050',
+      },
+    };
+  }
+
   console.log('Logging in with', payload);
   const response = await apiClient.post<LoginResponse>('/auth/login', payload);
   return response.data;

@@ -27,6 +27,26 @@ export interface RegisterResponse {
 }
 
 export async function registerUser(payload: RegisterPayload): Promise<RegisterResponse> {
+  const USE_MOCK = true;
+
+  if (USE_MOCK) {
+    return {
+      user: {
+        id: 'dev-001',
+        name: payload.name,
+        email: payload.email,
+        role: 'subscriber',
+      },
+      accessToken: 'mock-token-' + Date.now(),
+      refreshToken: 'mock-refresh-' + Date.now(),
+      iptvCredentials: {
+        portalUrl: 'http://opplex.rw:8080',
+        iptvUsername: 'kings117987',
+        iptvPassword: '505050',
+      },
+    };
+  }
+
   const response = await apiClient.post<RegisterResponse>('/auth/register', payload);
   return response.data;
 }

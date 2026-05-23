@@ -8,9 +8,9 @@ export const MOCK_USER = {
 };
 
 export const MOCK_IPTV_CREDENTIALS = {
-  portalUrl: "http://pro.business-cloud-8k.com",
-  iptvUsername: "685ecefaab5c",
-  iptvPassword: "b6e4b16799",
+  portalUrl: "http://opplex.rw:8080",
+  iptvUsername: "kings117987",
+  iptvPassword: "505050",
   expiresAt: MOCK_USER.expiresAt,
 };
 
