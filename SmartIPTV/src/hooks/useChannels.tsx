@@ -7,12 +7,12 @@ export function useChannels() {
 
   return useQuery({
     queryKey: ["channels", portalUrl],
-    queryFn: () => getChannels({ portalUrl, iptvUsername, iptvPassword }),
-    enabled: !!portalUrl && !!iptvUsername,
+    queryFn: () => getChannels({ portalUrl: portalUrl!, iptvUsername: iptvUsername!, iptvPassword: iptvPassword! }),
+    enabled: !!portalUrl && !!iptvUsername && !!iptvPassword,
     staleTime: 1000 * 60 * 10,
     retry: 2,
     select: (data) => ({
-      channels: data.channels ?? [],
+      channels:   data.channels   ?? [],
       categories: data.categories ?? [],
     }),
   });
@@ -25,13 +25,13 @@ export function useStreamUrl(channel: any) {
     queryKey: ["stream", channel?.id],
     queryFn: () =>
       getStreamUrl({
-        portalUrl,
-        iptvUsername,
-        iptvPassword,
-        cmd: channel.cmd,
+        portalUrl:    portalUrl!,
+        iptvUsername: iptvUsername!,
+        iptvPassword: iptvPassword!,
+        cmd:          channel.cmd,
       }),
     enabled: !!channel?.cmd && !!portalUrl && !!iptvUsername && !!iptvPassword,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 5,
     retry: 1,
   });
 }

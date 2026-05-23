@@ -3,11 +3,15 @@ import { ScrollView, TouchableOpacity, Text, View } from 'react-native';
 
 const ALL_CATEGORY = { id: 'all', name: 'All' };
 
-export default function CategoryFilter({ categories = [], selected, onSelect }) {
-  const scrollRef = useRef(null);
+export default function CategoryFilter({ categories = [], selected, onSelect }: {
+  categories?: { id: string; name: string }[];
+  selected: string | null;
+  onSelect: (id: string | null) => void;
+}) {
+  const scrollRef = useRef<ScrollView>(null);
   const allCategories = [ALL_CATEGORY, ...categories];
 
-  const handleSelect = (cat, index) => {
+  const handleSelect = (cat: { id: string; name: string }, index: number) => {
     onSelect(cat.id === 'all' ? null : cat.id);
     // Auto-scroll selected pill into view
     scrollRef.current?.scrollTo({ x: Math.max(0, index * 92 - 40), animated: true });
