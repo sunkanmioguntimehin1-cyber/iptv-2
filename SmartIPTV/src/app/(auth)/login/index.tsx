@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,15 +7,19 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { useRouter, Link } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
+} from "react-native";
+import { useRouter, Link } from "expo-router";
+import { useForm, Controller } from "react-hook-form";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LogoMark, SocialButton, SubscriptionBanner } from '../../../components/auth';
-import { FormField } from '../../../components/ui/FormField';
-import { Button } from '../../../components/ui/Button';
-import { useLogin } from '../../../hooks/useAuth';
-import { useAuthStore } from '../../../store/authStore';
+import {
+  LogoMark,
+  SocialButton,
+  SubscriptionBanner,
+} from "../../../components/auth";
+import { FormField } from "../../../components/ui/FormField";
+import { Button } from "../../../components/ui/Button";
+import { useLogin } from "../../../hooks/useAuth";
+import { useAuthStore } from "../../../store/authStore";
 
 interface FormValues {
   email: string;
@@ -34,40 +38,41 @@ export default function LoginScreen() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   });
 
-  const {
-    mutate: login,
-    isPending,
-    isError,
-    error,
-  } = useLogin();
+  const { mutate: login, isPending, isError, error } = useLogin();
 
+  const USE_M3U = true;
   const onSubmit = (data: FormValues) => {
+    console.log("Submitting login form with data:", data);
 
-    console.log('Submitting login form with data:', data);
-    login(data, {
-      onSuccess: (result) => {
-        console.log('Login successful:', result);
+    if (USE_M3U) {
+      router.replace("/(main)/channels" as any);
+      return;
+    } else {
+      login(data, {
+        onSuccess: (result) => {
+          console.log("Login successful:", result);
           // router.replace("/(main)/channels" as any);
 
-        if (result.iptvCredentials) {
-          router.replace("/(main)/channels" as any);
-        } else if (result.user?.subscriptionStatus === 'pending') {
-          router.replace("/payment/success" as any);
-        } else {
-          router.replace("/(auth)/plans" as any);
-        }
-      },
-    });
+          if (result.iptvCredentials) {
+            router.replace("/(main)/channels" as any);
+          } else if (result.user?.subscriptionStatus === "pending") {
+            router.replace("/payment/success" as any);
+          } else {
+            router.replace("/(auth)/plans" as any);
+          }
+        },
+      });
+    }
   };
 
   return (
     <SafeAreaView className="flex-1 bg-[#080810]">
       <KeyboardAvoidingView
         className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
           className="flex-1"
@@ -101,9 +106,9 @@ export default function LoginScreen() {
           {isError && (
             <View className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-5">
               <Text className="text-red-400 text-[13px] leading-relaxed">
-                {error?.message === 'Invalid credentials'
-                  ? 'Email or password is incorrect. Please try again.'
-                  : (error?.message ?? 'Login failed. Please try again.')}
+                {error?.message === "Invalid credentials"
+                  ? "Email or password is incorrect. Please try again."
+                  : (error?.message ?? "Login failed. Please try again.")}
               </Text>
             </View>
           )}
@@ -125,10 +130,10 @@ export default function LoginScreen() {
             placeholder="amaka@example.com"
             keyboardType="email-address"
             rules={{
-              required: 'Email is required',
+              required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Enter a valid email address',
+                message: "Enter a valid email address",
               },
             }}
             error={errors.email?.message}
@@ -140,7 +145,7 @@ export default function LoginScreen() {
             </Text>
             <View
               className={`flex-row items-center bg-white/5 border rounded-xl overflow-hidden ${
-                errors.password ? 'border-red-500/60' : 'border-white/10'
+                errors.password ? "border-red-500/60" : "border-white/10"
               }`}
             >
               <Controller
@@ -166,7 +171,7 @@ export default function LoginScreen() {
                 activeOpacity={0.7}
               >
                 <Text className="text-[11px] font-semibold text-violet-400">
-                  {showPassword ? 'Hide' : 'Show'}
+                  {showPassword ? "Hide" : "Show"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -184,7 +189,9 @@ export default function LoginScreen() {
           >
             <View
               className={`w-4 h-4 rounded border ${
-                rememberMe ? 'bg-violet-500 border-violet-500' : 'border-white/20 bg-white/5'
+                rememberMe
+                  ? "bg-violet-500 border-violet-500"
+                  : "border-white/20 bg-white/5"
               } items-center justify-center`}
             >
               {rememberMe && (
@@ -195,9 +202,12 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <Button
-            label={isPending ? 'Logging in...' : 'Log in'}
-            onPress={handleSubmit(onSubmit)}
-            loading={isPending}
+            label={isPending ? "Logging in..." : "Log in"}
+            // onPress={handleSubmit(onSubmit)}
+            onPress={()=>{
+                router.replace("/(main)/channels" as any);
+            }}
+            // loading={isPending}
           />
 
           <View className="flex-row items-center justify-center gap-1.5 mt-4">
@@ -209,7 +219,7 @@ export default function LoginScreen() {
 
           <View className="flex-row justify-center mt-6">
             <Text className="text-white/30 text-[13px]">
-              Don't have an account?{' '}
+              Don't have an account?{" "}
             </Text>
             <Link href="/(auth)/register" asChild>
               <TouchableOpacity activeOpacity={0.7}>

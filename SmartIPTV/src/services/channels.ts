@@ -1,3 +1,5 @@
+import { parseM3U } from './m3uParser';
+
 interface XtreamCredentials {
   portalUrl: string;
   iptvUsername: string;
@@ -87,4 +89,18 @@ export const getStreamUrl = async ({
 }: XtreamCredentials & { cmd: string }): Promise<string> => {
   const baseUrl = await getStreamBaseUrl({ portalUrl, iptvUsername, iptvPassword });
   return `${baseUrl}/live/${iptvUsername}/${iptvPassword}/${cmd}.ts`;
+};
+
+// ─── M3U mode ──────────────────────────────────────────────────────────────────
+const M3U_URL = 'https://iptv-org.github.io/iptv/index.m3u';
+
+export const getM3UChannels = async () => {
+  const res = await fetch(M3U_URL);
+  if (!res.ok) throw new Error(`M3U fetch error: ${res.status}`);
+  const text = await res.text();
+  return parseM3U(text);
+};
+
+export const getM3UStreamUrl = ({ cmd }: { cmd: string }): string => {
+  return cmd;
 };

@@ -40,6 +40,12 @@ export default function RegisterScreen() {
     const { confirmPassword, ...payload } = data;
     register(payload, {
       onSuccess: (result) => {
+        const USE_M3U = true;
+        if (USE_M3U) {
+          router.replace("/(main)/channels" as any);
+          return;
+        }
+
         if (result.iptvCredentials) {
           router.replace("/(main)/channels" as any);
         } else if (result.user?.subscriptionStatus === 'pending') {

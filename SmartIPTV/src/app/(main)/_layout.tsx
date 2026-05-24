@@ -7,18 +7,18 @@ export default function MainLayout() {
   const router = useRouter();
   const { accessToken, portalUrl, iptvUsername, user } = useAuthStore();
 
-    useEffect(() => {
-      if (!accessToken) {
-        router.replace("/(auth)" as any);
-        return;
-      }
-      if (portalUrl && iptvUsername) return;
-      if (user?.subscriptionStatus === 'pending') {
-        router.replace("/payment/success" as any);
-        return;
-      }
-      router.replace("/(auth)/plans" as any);
-    }, [accessToken, portalUrl, iptvUsername, user?.subscriptionStatus]);
+    // useEffect(() => {
+    //   if (!accessToken) {
+    //     router.replace("/(auth)" as any);
+    //     return;
+    //   }
+    //   if (portalUrl && iptvUsername) return;
+    //   if (user?.subscriptionStatus === 'pending') {
+    //     router.replace("/payment/success" as any);
+    //     return;
+    //   }
+    //   router.replace("/(auth)/plans" as any);
+    // }, [accessToken, portalUrl, iptvUsername, user?.subscriptionStatus]);
 
   return (
     <Stack

@@ -1,4 +1,5 @@
-import { useEffect, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useEffect } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { VideoView, useVideoPlayer } from 'expo-video';
