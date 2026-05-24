@@ -2,6 +2,9 @@ const axios  = require('axios');
 const logger = require('../utils/logger');
 const ApiError = require('../utils/ApiError');
 
+// ─── Check if XUI.ONE panel is configured ────────────────────────────────────
+const isXuiEnabled = () => !!process.env.XUIONE_BASE_URL;
+
 // ─── XUI.ONE admin API base request ──────────────────────────────────────────
 const xuiApi = axios.create({
   baseURL: process.env.XUIONE_BASE_URL,
@@ -76,11 +79,21 @@ const generateIptvPassword = () =>
 
 // ─── Create a subscriber account on XUI.ONE ──────────────────────────────────
 const createSubscriber = async ({ userName, durationDays, maxConnections = 1 }) => {
-  const iptvUsername = generateIptvUsername(userName);
-  const iptvPassword = generateIptvPassword();
-
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+  // Mock mode: skip XUI.ONE call, return fixed test credentials
+  if (!isXuiEnabled()) {
+    const mockBase = process.env.MOCK_IPTV_USERNAME || 'demo_user';
+    const userTag  = userName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+    const iptvUsername = `${mockBase}_${userTag}`;
+    const iptvPassword = process.env.MOCK_IPTV_PASSWORD || 'demo_pass_123';
+    logger.info(`MOCK: IPTV account created for ${userName}: ${iptvUsername}`);
+    return { xuiUserId: null, iptvUsername, iptvPassword, expiresAt };
+  }
+
+  const iptvUsername = generateIptvUsername(userName);
+  const iptvPassword = generateIptvPassword();
 
   // XUI.ONE API endpoint to create a user
   // Adjust the payload structure to match your XUI.ONE version
@@ -108,6 +121,11 @@ const extendSubscriber = async (xuiUserId, durationDays) => {
   const newExpiry = new Date();
   newExpiry.setDate(newExpiry.getDate() + durationDays);
 
+  if (!isXuiEnabled()) {
+    logger.info(`MOCK: subscriber ${xuiUserId} extended to ${newExpiry}`);
+    return newExpiry;
+  }
+
   await apiCall('post', '/api/user/update', {
     id:       xuiUserId,
     exp_date: Math.floor(newExpiry.getTime() / 1000),
@@ -120,6 +138,11 @@ const extendSubscriber = async (xuiUserId, durationDays) => {
 
 // ─── Deactivate a subscriber (on cancellation / expiry) ──────────────────────
 const deactivateSubscriber = async (xuiUserId) => {
+  if (!isXuiEnabled() || !xuiUserId) {
+    logger.info(`MOCK: deactivate skipped (no panel)`);
+    return;
+  }
+
   await apiCall('post', '/api/user/update', {
     id:     xuiUserId,
     active: 0,
